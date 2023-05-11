@@ -4,6 +4,7 @@ use reqwest::{
 };
 
 pub fn send_announcement(
+    blocking_client: &Client,
     base_url: &str,
     access_token: &str,
     course_id: u32,
@@ -13,9 +14,7 @@ pub fn send_announcement(
 ) -> Result<Response, Error> {
     let url = format!("{base_url}/courses/{course_id}/discussion_topics");
 
-    let client = Client::new();
-
-    let resp = client
+    let resp = blocking_client
         .post(url)
         .query(&[
             ("access_token", access_token.to_string()),

@@ -1,4 +1,6 @@
 use config::Config;
+use reqwest;
+use std::collections::HashMap;
 
 mod canvas;
 mod signup;
@@ -8,31 +10,34 @@ fn main() {
         .add_source(config::File::with_name("Settings"))
         .build();
 
-    let mut canvas_token: Option<String> = None;
-    let mut base_canvas_url: Option<String> = None;
+    let blocking_client = reqwest::blocking::Client::new();
+
+    let mut settings_map: HashMap<String, String> = HashMap::new();
+    let settings_keys = ["canvas_token", "base_canvas_url"];
 
     if let Ok(conf) = settings {
-        println!("File Found");
-        let canvas_token_fetch = conf.get_string("canvas_token");
-        if let Ok(t) = canvas_token_fetch {
-            println!("{}", t);
-            println!("Token Found");
-            canvas_token = Some(t);
-        }
-
-        if let Ok(url) = conf.get_string("base_canvas_url") {
-            base_canvas_url = Some(url);
+        println!("Config File Found...");
+        for key in settings_keys {
+            if let Ok(s) = conf.get_string(key) {
+                settings_map.insert(key.to_string(), s.to_string());
+            }
         }
     } else {
-        println!("Error getting file");
+        println!("Error getting config file");
     }
 
-    if let (Some(token), Some(base_url)) = (canvas_token, base_canvas_url) {
+    println!("{:?}", settings_map);
+
+    if let (Some(token), Some(base_url)) = (
+        settings_map.get(settings_keys[0]),
+        settings_map.get(settings_keys[1]),
+    ) {
         let resp = canvas::send_announcement(
+            &blocking_client,
             base_url.as_str(),
             token.as_str(),
             6768,
-            "Another Rust Test",
+            "Another Rust Test, with generalized config",
             "This message was sent with the Rust Programming Language, and using proper token config",
             true,
         );

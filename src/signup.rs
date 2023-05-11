@@ -1,3 +1,5 @@
+use reqwest::blocking::Client;
+
 pub struct SignUp {
     pub url: String,
     pub title: String,
@@ -13,3 +15,5 @@ pub struct SignUpRole {
     pub location: String,
     // TODO: Date and Time stuff
 }
+
+// TODO: method for getting a SignUp with the SignupGenius API

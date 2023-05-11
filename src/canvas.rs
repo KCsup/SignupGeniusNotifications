@@ -4,14 +4,14 @@ use reqwest::{
 };
 
 pub fn send_announcement(
+    base_url: &str,
     access_token: &str,
     course_id: u32,
     title: &str,
     message: &str,
     is_published: bool,
 ) -> Result<Response, Error> {
-    const BASE_CANVAS_URL: &str = "https://dexterschools.instructure.com/api/v1";
-    let url = format!("{}/courses/{course_id}/discussion_topics", BASE_CANVAS_URL);
+    let url = format!("{base_url}/courses/{course_id}/discussion_topics");
 
     let client = Client::new();
 

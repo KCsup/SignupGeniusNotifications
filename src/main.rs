@@ -9,6 +9,7 @@ fn main() {
         .build();
 
     let mut canvas_token: Option<String> = None;
+    let mut base_canvas_url: Option<String> = None;
 
     if let Ok(conf) = settings {
         println!("File Found");
@@ -18,12 +19,17 @@ fn main() {
             println!("Token Found");
             canvas_token = Some(t);
         }
+
+        if let Ok(url) = conf.get_string("base_canvas_url") {
+            base_canvas_url = Some(url);
+        }
     } else {
         println!("Error getting file");
     }
 
-    if let Some(token) = canvas_token {
+    if let (Some(token), Some(base_url)) = (canvas_token, base_canvas_url) {
         let resp = canvas::send_announcement(
+            base_url.as_str(),
             token.as_str(),
             6768,
             "Another Rust Test",

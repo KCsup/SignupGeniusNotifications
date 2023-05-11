@@ -43,8 +43,7 @@ fn main() {
         );
 
         if let Ok(resp_content) = resp {
-            println!("response was ok!");
-            println!("{:?}", resp_content);
+            println!("Status: {:?}", resp_content.status());
         }
     }
 }

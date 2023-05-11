@@ -1,4 +1,4 @@
-use reqwest::blocking::Client;
+use reqwest::blocking::{Client, Response};
 
 pub struct SignUp {
     pub url: String,

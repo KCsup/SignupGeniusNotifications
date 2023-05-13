@@ -1,4 +1,4 @@
-use reqwest::blocking::{Client, Response};
+use reqwest::blocking::Client;
 
 pub struct SignUp {
     pub url: String,
@@ -20,7 +20,6 @@ pub struct SignUpRole {
 pub fn get_json_response(
     blocking_client: &Client,
     url: &str,
-) -> reqwest::Result<serde_json::Value> {
-    let request = blocking_client.get("http://httpbin.org/ip").send();
-    if let Ok(response) = request {} // Will not compile, needs to return right type
+) -> Result<serde_json::Value, reqwest::Error> {
+    blocking_client.get(url).send()?.json::<serde_json::Value>()
 }

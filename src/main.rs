@@ -28,22 +28,25 @@ fn main() {
 
     println!("{:?}", settings_map);
 
-    if let (Some(token), Some(base_url)) = (
-        settings_map.get(settings_keys[0]),
-        settings_map.get(settings_keys[1]),
-    ) {
-        let resp = canvas::send_announcement(
-            &blocking_client,
-            &base_url,
-            &token,
-            6768,
-            "Another Rust Test, with generalized config",
-            "This message was sent with the Rust Programming Language, and using proper token config",
-            true,
-        );
+    // if let (Some(token), Some(base_url)) = (
+    //     settings_map.get(settings_keys[0]),
+    //     settings_map.get(settings_keys[1]),
+    // ) {
+    //     let resp = canvas::send_announcement(
+    //         &blocking_client,
+    //         &base_url,
+    //         &token,
+    //         6768,
+    //         "Another Rust Test, with generalized config",
+    //         "This message was sent with the Rust Programming Language, and using proper token config",
+    //         true,
+    //     );
 
-        if let Ok(resp_content) = resp {
-            println!("Status: {:?}", resp_content.status());
-        }
-    }
+    //     if let Ok(resp_content) = resp {
+    //         println!("Status: {:?}", resp_content.status());
+    //     }
+    // }
+
+    let json = signup::get_json_response(&blocking_client, "https://httpbin.org/json");
+    println!("json: {:?}", json);
 }

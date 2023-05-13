@@ -12,10 +12,8 @@ pub fn send_announcement(
     message: &str,
     is_published: bool,
 ) -> Result<Response, Error> {
-    let url = format!("{base_url}/courses/{course_id}/discussion_topics");
-
-    let resp = blocking_client
-        .post(url)
+    blocking_client
+        .post(format!("{base_url}/courses/{course_id}/discussion_topics"))
         .query(&[
             ("access_token", access_token.to_string()),
             ("title", title.to_string()),
@@ -23,7 +21,5 @@ pub fn send_announcement(
             ("published", is_published.to_string()),
             ("is_announcement", true.to_string()),
         ])
-        .send()?;
-
-    Ok(resp)
+        .send()
 }

@@ -34,8 +34,8 @@ fn main() {
     ) {
         let resp = canvas::send_announcement(
             &blocking_client,
-            base_url.as_str(),
-            token.as_str(),
+            &base_url,
+            &token,
             6768,
             "Another Rust Test, with generalized config",
             "This message was sent with the Rust Programming Language, and using proper token config",

@@ -14,7 +14,7 @@ fn main() {
     let blocking_client = reqwest::blocking::Client::new();
 
     let mut settings_map: HashMap<String, String> = HashMap::new();
-    let settings_keys = ["canvas_token", "base_canvas_url"];
+    let settings_keys = ["canvas_token", "base_canvas_url", "signup_genius_token"];
 
     if let Ok(conf) = settings {
         println!("Config File Found...");
@@ -48,15 +48,18 @@ fn main() {
     //     }
     // }
 
-    let json = signup::get_json_response(&blocking_client, "https://httpbin.org/json");
-    println!("json: {:?}", json);
-    if let Ok(json_value) = json {
-        assert_eq!(
-            json_value["slideshow"]["authors"],
-            serde_json::Value::Null,
-            "JSON Object Key not found..."
-        );
-        println!()
-        // println!("JSON Value: {:?}", json_value["slideshow"]["authors"]);
+    // let json = signup::get_json_response(&blocking_client, "https://httpbin.org/json", None);
+    // println!("json: {:?}", json);
+    // if let Ok(json_value) = json {
+    //     assert_eq!(
+    //         json_value["slideshow"]["authors"],
+    //         serde_json::Value::Null,
+    //         "JSON Object Key not found..."
+    //     );
+    //     // println!("JSON Value: {:?}", json_value["slideshow"]["authors"]);
+    // }
+    if let Some(sg_key) = settings_map.get("signup_genius_token") {
+        let current_ids = signup::get_active_signup_ids(&blocking_client, &sg_key);
+        println!("Current IDs: {:?}", current_ids);
     }
 }

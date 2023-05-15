@@ -22,17 +22,35 @@ pub struct SignUpRole {
 pub fn get_json_response(
     blocking_client: &Client,
     url: &str,
+    query_map: Option<Vec<(&str, &str)>>,
 ) -> Result<serde_json::Value, reqwest::Error> {
-    blocking_client.get(url).send()?.json::<serde_json::Value>()
+    let mut request_builder = blocking_client.get(url);
+
+    if let Some(queries) = query_map {
+        request_builder = request_builder.query(&queries);
+    }
+
+    request_builder.send()?.json::<serde_json::Value>()
 }
 
 // Theoretical method; Needs testing with the API to validate functionality
-fn get_active_signups(
+pub fn get_active_signup_ids(
     blocking_client: &Client,
-    signup_genius_user_key: &str,
-) -> Result<Vec<SignUp>, reqwest::Error> {
-    let active_json = get_json_response(
+    signup_genius_token: &str,
+) -> Result<Vec<u64>, reqwest::Error> {
+    let mut ids: Vec<u64> = Vec::new();
+
+    if let Some(active_json_array) = get_json_response(
         blocking_client,
-        &format!("{}/signups/created,active", BASE_SIGNUP_GENIUS_URL),
-    ); // Will not compile; type return doesn't match
+        &format!("{}/signups/created/active/", BASE_SIGNUP_GENIUS_URL),
+        Some(vec![("user_key", signup_genius_token)]),
+    )?
+    .as_array()
+    {
+        for i in 0..active_json_array.len() {
+            ids.push(active_json_array[i]["signupid"].as_u64().unwrap());
+        }
+    }
+
+    Ok(ids)
 }

@@ -1,5 +1,6 @@
 use config::Config;
 use reqwest;
+use serde_json;
 use std::collections::HashMap;
 
 mod canvas;
@@ -49,4 +50,13 @@ fn main() {
 
     let json = signup::get_json_response(&blocking_client, "https://httpbin.org/json");
     println!("json: {:?}", json);
+    if let Ok(json_value) = json {
+        assert_eq!(
+            json_value["slideshow"]["authors"],
+            serde_json::Value::Null,
+            "JSON Object Key not found..."
+        );
+        println!()
+        // println!("JSON Value: {:?}", json_value["slideshow"]["authors"]);
+    }
 }

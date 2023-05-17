@@ -45,7 +45,6 @@ pub struct SignUpRole {
     // TODO: Date and Time stuff
 }
 
-// TODO: method for getting a SignUp with the SignupGenius API
 pub fn get_json_response(
     blocking_client: &Client,
     url: &str,

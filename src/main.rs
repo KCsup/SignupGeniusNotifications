@@ -1,3 +1,4 @@
+use chrono::{DateTime, Local, LocalResult, TimeZone};
 use config::Config;
 use reqwest;
 use std::collections::HashMap;
@@ -28,9 +29,12 @@ fn main() {
 
     println!("{:?}", settings_map);
 
-    if let Some(sg_key) = settings_map.get("signup_genius_token") {
-        let current_signups =
-            signup::get_active_signups_with_roles(&blocking_client, &sg_key).unwrap();
-        println!("Current Signups: {:?}", current_signups);
-    }
+    // if let Some(sg_key) = settings_map.get("signup_genius_token") {
+    //     let current_signups =
+    //         signup::get_active_signups_with_roles(&blocking_client, &sg_key).unwrap();
+    //     println!("Current Signups: {:?}", current_signups);
+    // }
+
+    let test_local_time = Local.timestamp_millis_opt(1767157200).unwrap();
+    println!("{:?}", test_local_time.date())
 }

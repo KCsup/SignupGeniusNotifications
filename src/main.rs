@@ -29,10 +29,8 @@ fn main() {
     println!("{:?}", settings_map);
 
     if let Some(sg_key) = settings_map.get("signup_genius_token") {
-        let mut current_signups = signup::get_active_signups(&blocking_client, &sg_key).unwrap();
-        for s in current_signups.iter_mut() {
-            s.fill_roles(&blocking_client, &sg_key);
-        }
+        let current_signups =
+            signup::get_active_signups_with_roles(&blocking_client, &sg_key).unwrap();
         println!("Current Signups: {:?}", current_signups);
     }
 }

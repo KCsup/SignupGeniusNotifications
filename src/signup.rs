@@ -60,6 +60,19 @@ pub fn get_json_response(
     request_builder.send()?.json::<serde_json::Value>()
 }
 
+pub fn get_active_signups_with_roles(
+    blocking_client: &Client,
+    signup_genius_token: &str,
+) -> Result<Vec<SignUp>, reqwest::Error> {
+    let mut current_signups = get_active_signups(blocking_client, signup_genius_token)?;
+
+    for s in current_signups.iter_mut() {
+        s.fill_roles(blocking_client, signup_genius_token);
+    }
+
+    Ok(current_signups)
+}
+
 pub fn get_active_signups(
     blocking_client: &Client,
     signup_genius_token: &str,

@@ -36,5 +36,5 @@ fn main() {
     // }
 
     let test_local_time = Local.timestamp_millis_opt(1767157200).unwrap();
-    println!("{:?}", test_local_time.date())
+    println!("{:?}", test_local_time.to_rfc2822());
 }

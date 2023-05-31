@@ -1,4 +1,4 @@
-use chrono::{DateTime, Local, LocalResult, TimeZone};
+use chrono::{Local, TimeZone};
 use config::Config;
 use reqwest;
 use std::collections::HashMap;
